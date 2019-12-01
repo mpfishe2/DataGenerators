@@ -26,8 +26,15 @@ with open(configFilePath, "r") as data:
     BOOTSTRAP_SERVER_B =  configJSON["worker-b-ip"] + ":9092"
     TOPIC_NAME = configJSON["topic"]
 
+
 def random_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for x in range(size))
+
+### Change to True if using Kafka for ingestion
+kafka = False
+STAY_ON = True
+
+curDir = os.getcwd()
 
 if kafka == False:
     sbs = ServiceBusService(service_namespace=EVENT_HUB_NAMESPACE, shared_access_key_name=SHARED_ACCESS_KEY_NAME, shared_access_key_value=KEY_VALUE)
