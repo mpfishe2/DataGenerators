@@ -1,9 +1,9 @@
 {
-    "namespaceName": "eventhubs",
-    "keyName": "KEY_NAME",
-    "keyValue": "KEY_VALUE",
-    "hubName": "HUB_NAME",
-    "worker-a-ip": "WORKER_A_IP",
-    "worker-b-ip": "WORKER_B_IP",
-    "topic": "TOPIC"
+    "namespaceName": "bds-eventhub",
+    "keyName": "sender",
+    "keyValue": "70H0/JhIiz0rU+VWejDTS6g2DG12o7Um/Hwr+t9lO8A=",
+    "hubName": "pos",
+    "worker-a-ip": "10.3.0.15",
+    "worker-b-ip": "10.3.0.14",
+    "topic": "pos"
 }
