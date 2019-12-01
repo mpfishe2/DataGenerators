@@ -1,0 +1,9 @@
+{
+    "namespaceName": "NAMESPACE_NAME",
+    "keyName": "KEY_NAME",
+    "keyValue": "KEY_VALUE",
+    "hubName": "HUB_NAME",
+    "worker-a-ip": "WORKER_A_IP",
+    "worker-b-ip": "WORKER_B_IP",
+    "topic": "TOPIC"
+}
