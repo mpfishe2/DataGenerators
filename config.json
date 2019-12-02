@@ -1,5 +1,5 @@
 {
-    "namespaceName": "eventhubs",
+    "namespaceName": "NAMESPACE_NAME",
     "keyName": "KEY_NAME",
     "keyValue": "KEY_VALUE",
     "hubName": "HUB_NAME",

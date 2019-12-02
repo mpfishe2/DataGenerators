@@ -9,11 +9,19 @@ from kafka import KafkaProducer
 from azure.servicebus import ServiceBusService
 
 ### Change to True if using Kafka for ingestion
-kafka = True
+kafka = False
 STAY_ON = True
+windows = True
 
 curDir = os.getcwd()
-configFilePath = curDir[0:38] + "config.json"
+if (windows):
+    configFilePath = curDir + "\\config.json"
+    pklFilePath = curDir + "\\productJsonsV2.pkl"
+else:
+    configFilePath = curDir + "/config.json"
+    pklFilePath = curDir + "/productJsonsV2.pkl"
+
+
 with open(configFilePath, "r") as data:
     configJSON = json.load(data)
     ### EVENT HUB CONFIGURATION
@@ -26,8 +34,15 @@ with open(configFilePath, "r") as data:
     BOOTSTRAP_SERVER_B =  configJSON["worker-b-ip"] + ":9092"
     TOPIC_NAME = configJSON["topic"]
 
+
 def random_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for x in range(size))
+
+### Change to True if using Kafka for ingestion
+kafka = False
+STAY_ON = True
+
+curDir = os.getcwd()
 
 if kafka == False:
     sbs = ServiceBusService(service_namespace=EVENT_HUB_NAMESPACE, shared_access_key_name=SHARED_ACCESS_KEY_NAME, shared_access_key_value=KEY_VALUE)
@@ -38,7 +53,7 @@ else:
 storeids = list(range(1000, 1010))
 print(len(storeids))
 
-with open(curDir + "\\productJsons.pkl", "rb") as data:
+with open(pklFilePath, "rb") as data:
     products = pickle.load(data)
 
 
@@ -66,4 +81,3 @@ while (STAY_ON):
         # send to kafka
         producer.send(TOPIC_NAME, s)
         print(s)
-
