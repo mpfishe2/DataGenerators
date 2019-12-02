@@ -11,9 +11,17 @@ from azure.servicebus import ServiceBusService
 ### Change to True if using Kafka for ingestion
 kafka = False
 STAY_ON = True
+windows = True
 
 curDir = os.getcwd()
-configFilePath = curDir[0:38] + "config.json"
+if (windows):
+    configFilePath = curDir + "\\config.json"
+    pklFilePath = curDir + "\\productJsonsV2.pkl"
+else:
+    configFilePath = curDir + "/config.json"
+    pklFilePath = curDir + "/productJsonsV2.pkl"
+
+
 with open(configFilePath, "r") as data:
     configJSON = json.load(data)
     ### EVENT HUB CONFIGURATION
@@ -45,7 +53,7 @@ else:
 storeids = list(range(1000, 1010))
 print(len(storeids))
 
-with open(curDir + "\\productJsons.pkl", "rb") as data:
+with open(pklFilePath, "rb") as data:
     products = pickle.load(data)
 
 
