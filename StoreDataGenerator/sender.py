@@ -38,11 +38,11 @@ with open(configFilePath, "r") as data:
 def random_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for x in range(size))
 
-### Change to True if using Kafka for ingestion
-kafka = False
-STAY_ON = True
 
-curDir = os.getcwd()
+
+
+
+
 
 if kafka == False:
     sbs = ServiceBusService(service_namespace=EVENT_HUB_NAMESPACE, shared_access_key_name=SHARED_ACCESS_KEY_NAME, shared_access_key_value=KEY_VALUE)
@@ -63,13 +63,8 @@ while (STAY_ON):
     storeID = transactionID.split("-")[0]
     numOfProducts = random.randint(1,20)
     cart = [products[random.randint(0, 298)] for i in range(0, numOfProducts)]
-    
-    reading = {
-        "transactionID": transactionID,
-        "storeID": storeID,
-        "transactionTime": int(transactionTime),
-        "cart": cart
-    }
+
+    reading = {'transactionID': transactionID, 'storeID': storeID, 'transactionTime': int(transactionTime), 'cart': cart}
 
     if kafka == False:
         s = json.dumps(reading)
@@ -77,7 +72,6 @@ while (STAY_ON):
         sbs.send_event(HUB_NAME, s)
         print(s)
     else:
-        s = json.dumps(reading)
         # send to kafka
-        producer.send(TOPIC_NAME, s)
-        print(s)
+        producer.send(TOPIC_NAME, reading)
+        print(reading)
