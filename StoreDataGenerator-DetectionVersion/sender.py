@@ -38,9 +38,15 @@ with open(configFilePath, "r") as data:
 def random_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for x in range(size))
 
-
-
-
+def addSomeSyrup (cart, noOfSyrup):
+    coughSyrupReading = {"name": "Maty's All Natural Kids 1+ Caramel Banana Taste Cough Syrup",
+                        "brand": "Maty's",
+                        "category":"MEDICINEOTC",
+                        "upc14": "00899874002018",
+                        "grp_id":"60",
+                        "price": 17}
+    for i in range(0, noOfSyrup):
+        cart.append(coughSyrupReading)
 
 
 
@@ -57,6 +63,9 @@ with open(pklFilePath, "rb") as data:
     products = pickle.load(data)
 
 
+targetStoresA = ["1005", "1007"]
+targetStoresB = ["1004", "1006", "1008"]
+
 while (STAY_ON):
     transactionTime = str(time.time()).split(".")[0]
     transactionID = str(storeids[random.randint(0,len(storeids)-1)])+"-"+ transactionTime + "-" + random_generator()
@@ -64,14 +73,40 @@ while (STAY_ON):
     numOfProducts = random.randint(1,20)
     cart = [products[random.randint(0, 298)] for i in range(0, numOfProducts)]
 
+
+
+
+
+    if (storeID in targetStoresA):
+        # print
+        print("made it to store a")
+        fraud = random.randint(0, 100) < 3
+        if (fraud):
+            print("triggering fraud for store a")
+            numOfSyrupToAdd = random.randint(2,10)
+            addSomeSyrup(cart,numOfSyrupToAdd)
+            print(cart)
+    elif (storeID in targetStoresB):
+        # print
+        print("got here for stores B")
+        fraud = 10 > random.randint(0, 100)
+        if (fraud):
+            print("triggering fraud for store b")
+            numOfSyrupToAdd = random.randint(2,10)
+            addSomeSyrup(cart,numOfSyrupToAdd)
+            print(cart)
+    else:
+        # print
+        pass
+
     reading = {'transactionID': transactionID, 'storeID': storeID, 'transactionTime': int(transactionTime), 'cart': cart}
 
     if kafka == False:
         s = json.dumps(reading)
         # send to Azure Event Hub
         sbs.send_event(HUB_NAME, s)
-        print(s)
+        # print(s)
     else:
         # send to kafka
         producer.send(TOPIC_NAME, reading)
-        print(reading)
+        # print(reading)
